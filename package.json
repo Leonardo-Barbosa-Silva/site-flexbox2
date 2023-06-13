@@ -1,0 +1,14 @@
+{
+  "name": "flexbox2",
+  "version": "1.0.0",
+  "description": "Exercise project about a fake haircut establishment website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node ./server.js"
+  },
+  "author": "Leonardo B. Silva",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
