@@ -1,10 +1,26 @@
+/* 
+-----------------------------------------------------------------------------------------------------------------------------------
+A propriedade 'box-sizing' somente determina como os browsers calculam as dimensões de elementos em relação aos seus conteúdos, paddings e bordas (o elemento terá sempre as dimensões definidas independente da adição de padding e bordas).
+
+Portanto, a maneira como a largura da barra de rolagem é considerada ao usar unidades de viewport (vh, vw) não é abordado por essa propriedade. 
+
+O problema é que ao usarmos "100vw" para definirmos a largura de elementos, a largura total da janela do navegador é considerada, incluindo barra de rolagem. Então se a barra de rolagem estiver visível, a largura da barra de rolagem é adicionada à largura total do elemento, pode resultar em um desbordamento horizontal, pois teremos: 
+
+>>>>>>>>>>> width do elemento = width da janela do browser + width da barra vertical <<<<<<<<<<<<<
+
+Uma solução potencial para evitar o desbordamento horizontal causado pela barra de rolagem seria subtrair a largura da barra de rolagem do total. No entanto, a largura da barra de rolagem pode variar entre diferentes navegadores e sistemas operacionais, e o CSS não fornece uma maneira confiável de medi-la.
+
+Uma solução alternativa é usar percentuais (%) em vez de unidades de viewport, quando apropriado. Quando você define a largura de um elemento como 100%, essa largura é calculada em relação ao elemento pai, e não inclui a largura da barra de rolagem.
+-----------------------------------------------------------------------------------------------------------------------------------
+*/
+
+
+
 :root {
     --font-primary: "Montserrat";
     --font-secundary: "Arial";
     --font-terciary: "Gerogia";
-    --color-primary: #000000;
-    --color-secundary: #ffffff;
-    --color-terciary: #3a3a3a; 
+    --color-primary: rgb(83, 55, 0);
 }
 
 * {
@@ -16,14 +32,14 @@
 }
 
 header {
-    width: 100vw;
+    width: 100%;
     height: 120px;
-    background-color: var(--color-primary);
+    background-color: #000;
     display: flex;
     justify-content: center;
 }
 
-.header-content-wrapper {
+.header-container {
     width: 80%;
     display: flex;
     justify-content: space-between;
@@ -32,36 +48,221 @@ header {
 
 .logo {
     width: 100px;
-    border-radius: 25%;
+    height: 120px;
+    display: flex;
+    align-items: center;
 }
 
 .logo img {
     width: 100%;
     height: auto;
-    object-fit: contain;
-    background-color: #414141;
-    border-radius: 25%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
-.header-content-wrapper nav ul {
+.header-container nav ul {
     display: flex;
     gap: 20px;
     font-family: var(--font-primary);
     font-weight: 600;
     font-size: 16px;
 }
-.header-content-wrapper nav ul li {
+.header-container nav ul li {
     text-transform: uppercase;
 }
-.header-content-wrapper nav ul li a {
+.header-container nav ul li a {
     display: flex;
     height: 100px;
     align-items: center;
-    color: var(--color-secundary);
+    color: #fff;
 }
 
-.header-content-wrapper nav ul .active a,
-.header-content-wrapper nav ul li a:hover {
-    border-bottom: 5px solid #414141;
-    color: #414141;
+.header-container nav ul .active a,
+.header-container nav ul li a:hover {
+    border-bottom: 5px solid var(--color-primary);
+    color: var(--color-primary);
+}
+
+
+/*
+-----------------------------------------------------------------------------------------------------------------------------------
+Os elementos "inline-block" são parecidos com os elementos "inline", mas permitem a definição de largura e altura. Um aspecto a se considerar é que eles levam em conta os espaços em branco (incluindo quebras de linha) entre as tags no código HTML.
+
+Este espaço é gerado a partir da forma como os browsers interpretam o HTML, que considera qualquer espaço entre elementos "inline" (incluindo "inline-block") como um caractere de espaço literal, semelhante a um espaço entre palavras em um texto.
+
+Isso pode causar comportamentos indesejados, como quebras de linha inesperadas, pois os espaços entre as tags HTML são entendidas pelos browsers como espaços literais entre os respectivos elementos quando renderizados.
+
+Entretanto, além disso, quando um elemento "inline-block" é vazio, ou seja, não contém quaisquer outro elemento ou texto, ainda é mantido as dimensões definidas, porém, o espaço interno logicamente não é preenchido, resultando numa área "vazia" internamente ao elemento. Este comportamento pode gerar certa confusão na visualização da página, como se houvesse uma caixa invisível no layout, deslocando outros elementos, mas sem mostrar-se por si só.
+-----------------------------------------------------------------------------------------------------------------------------------
+*/
+
+
+#banner {
+    height: calc(100vh - 30vh);
+    width: 100%;
+    background-image: url('../images/banner.jpg');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+#banner .slider {
+    background-color: rgba(0, 0, 0, 0.6);
+    height: 100%;
+    width: 300vw;
+    font-size: 0;
+    transition: margin-left 0.5s ease-in-out;
+}
+#banner .slider .slide {
+    display: inline-block;
+    height: 100%;
+    width: 100vw;
+}
+
+#banner .slide .slide-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-primary);
+    text-transform: uppercase;
+    color: #fff;
+}
+
+#banner .slide .slide-content .text h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    text-align: center;
+}
+#banner .slide .slide-content .text h1 span {
+    color: var(--color-primary);
+}
+#banner .slide .slide-content .text h2 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#banner .slide .slide-content .button {
+    margin-top: 50px;
+    background-color: var(--color-primary);
+    border-radius: 20px;
+}
+#banner .slide .slide-content .button a {
+    display: block;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 15px 50px;
+    color: #fff;
+}
+#banner .slide .slide-content .button a:hover {
+    opacity: 20%;
+}
+
+.slider-pointers {
+    position: absolute;
+    width: 100%;
+    margin-top: -30px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    color: #fff;
+    gap: 10px;
+}
+.slider-pointers .pointer {
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--color-primary);
+    border-radius: 50%;
+    cursor: pointer;
+}
+.slider-pointers .pointer.active {
+    width: 20px;
+    height: 20px;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+}
+
+.call-button {
+    position: absolute;
+    right: 10%;
+    width: 50px;
+    height: 50px;
+    margin-top: -30px;
+    font-size: 20px;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+}
+.call-button img {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+}
+
+#content-default {
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+/*
+-----------------------------------------------------------------------------------------------------------------------------------
+Lembre-se que, por padrão, 'divs' herdam o "width" de seus pais e seus "height" são automáticos ("auto") de acordo com os filhos.
+-----------------------------------------------------------------------------------------------------------------------------------
+*/
+
+.content-default-container.light {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    color: #000;
+}
+.content-default-container.dark {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+    color: #fff;
+}
+
+.about {
+    width: 80%;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.about .about-headline {
+    font-family: var(--font-primary);
+    text-align: center;
+}
+.about .about-headline h1 {
+    font-weight: 600;
+    font-size: 2rem;
+}
+.about .about-headline h2 {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #555;
+}
+
+.about .about-content {
+    font-family: var(--font-secundary);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.about .about-content .text-resume {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    line-height: 25px;
 }
